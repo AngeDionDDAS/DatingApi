@@ -31,8 +31,9 @@ namespace DatingApi.Data
             using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
             {
                 var comptedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                for (int i = 0; i < comptedHash.Length; i++){
-                    if (comptedHash[i].ToString() != passwordHash.ToString())
+                for (int i = 0; i < comptedHash.Length; i++)
+                {
+                    if (comptedHash[i] != passwordHash[i])
                     {
                         return false;
                     }
