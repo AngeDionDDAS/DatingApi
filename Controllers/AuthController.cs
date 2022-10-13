@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using DatingApi.Data;
-using DatingApi.Dto;
+using DatingApi.Dtos;
 using DatingApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,4 @@
-﻿namespace DatingApi.Dto
+﻿namespace DatingApi.Dtos
 {
     public class UserLoginDto
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DatingApi.Dto
+namespace DatingApi.Dtos
 {
     public class UserRegisterDto
     {

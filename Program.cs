@@ -4,9 +4,9 @@ using DatingApi.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using DatingApi.Helpers;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +18,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlite(builder.Configuration.GetConnectionString("DefautlConnection")));
 builder.Services.AddCors();
+builder.Services.AddTransient<Seed>();
+builder.Services.AddScoped<IDatingRepository, DatingRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -31,6 +33,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
+
+
+builder.Services.AddMvc().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling =
+       Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});
+
+
+builder.Services.AddAutoMapper();
+
+
 
 var app = builder.Build();
 
@@ -59,6 +73,16 @@ else
     });
 }
 
+//SeedDatabase(); //can be placed above app.UseStaticFiles();
+   
+ void SeedDatabase() //can be placed at the very bottom under app.Run()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<Seed>();
+        dbInitializer.SeedUsers();
+    }
+}
 
 app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 

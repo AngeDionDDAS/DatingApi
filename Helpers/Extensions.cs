@@ -9,5 +9,13 @@
             response.Headers.Add("Acces-Control-Allow-Origin", "*");
 
         }
+
+        public static int CalculeAge(this DateTime theDateTime)
+        {
+            var age = DateTime.Today.Year - theDateTime.Year;
+            if(theDateTime.AddYears(age) > DateTime.Today)
+                age--;
+            return age;
+        }
     }
 }
